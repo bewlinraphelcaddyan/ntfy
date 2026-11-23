@@ -6,7 +6,7 @@
 // https://flutter.dev/to/pubspec-plugin-platforms.
 
 import 'ntfy_platform_interface.dart';
-
+export 'ntfy_windows.dart' if (dart.library.html) 'ntfy_web.dart';
 class Ntfy {
 
 
