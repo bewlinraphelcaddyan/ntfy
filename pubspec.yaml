@@ -4,7 +4,7 @@ version: 1.0.2
 homepage: https://github.com/Shiba-Kar/ntfy
 
 environment:
-  sdk: ^3.11.5
+  sdk: ^3.11.0
   flutter: '>=3.3.0'
 
 dependencies:
