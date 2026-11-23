@@ -5,7 +5,7 @@ import 'dart:html' as html;
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'ntfy_platform_interface.dart';
-import 'src/ntfy_io_client.dart';
+import 'src/ntfy_url.dart';
 
 class NtfyWeb extends NtfyPlatform {
   static void registerWith(Registrar registrar) {
@@ -39,7 +39,7 @@ class NtfyWeb extends NtfyPlatform {
   Future<void> _loop(int generation, String url, String topic) async {
     var delaySeconds = 2;
     while (generation == _generation) {
-      final target = _topicUrl(url, topic, _since, sse: true);
+      final target = ntfyTopicUrl(url, topic, _since, sse: true);
       if (target == null) return;
       final dropped = await _open(generation, target);
       _source?.close();

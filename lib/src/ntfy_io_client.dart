@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'ntfy_url.dart';
+
 class NtfyIoClient {
   final StreamController<String> _controller = StreamController<String>.broadcast();
   HttpClient? _client;
@@ -37,7 +39,7 @@ class NtfyIoClient {
   }
 
   Future<bool> _readOnce(int generation, String url, String topic, String? auth) async {
-    final target = _topicUrl(url, topic, _since, sse: false);
+    final target = ntfyTopicUrl(url, topic, _since, sse: false);
     if (target == null) return false;
     final client = HttpClient()..connectionTimeout = const Duration(seconds: 20);
     _client = client;
@@ -78,14 +80,4 @@ class NtfyIoClient {
       if (!_controller.isClosed) _controller.add(raw);
     } catch (_) {}
   }
-}
-
-String? _topicUrl(String base, String topic, String since, {required bool sse}) {
-  final root = base.trim();
-  final id = topic.trim();
-  final cursor = since.trim();
-  if (root.isEmpty || id.isEmpty || cursor.isEmpty) return null;
-  final host = root.endsWith('/') ? root.substring(0, root.length - 1) : root;
-  final path = sse ? 'sse' : 'json';
-  return '$host/${Uri.encodeComponent(id)}/$path?since=${Uri.encodeQueryComponent(cursor)}';
 }
